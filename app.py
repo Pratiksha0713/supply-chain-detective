@@ -24,8 +24,6 @@ sys.path.insert(0, frontend_dir)
 # Backend imports
 from missions import get_mission, get_mission_count, get_mission_hints, get_correct_answer
 from scoring import score_submission
-from data_loader import load_shipment_data, load_warehouse_data
-from kpi_engine import calculate_kpis
 
 # Frontend imports
 from components import apply_custom_styling, render_header, mission_header, submit_button, alert_box
