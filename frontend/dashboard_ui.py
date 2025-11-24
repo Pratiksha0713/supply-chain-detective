@@ -10,7 +10,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import sys
-sys.path.append('frontend')
+import os
+
+# Add frontend path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, current_dir)
 
 from components import kpi_card, alert_box, mission_header
 

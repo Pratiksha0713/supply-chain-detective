@@ -11,10 +11,15 @@ import numpy as np
 from datetime import datetime
 import time
 import sys
+import os
 
-# Add paths for imports
-sys.path.append('backend')
-sys.path.append('frontend')
+# Add paths for imports using absolute paths
+current_dir = os.path.dirname(os.path.abspath(__file__))
+backend_dir = os.path.join(current_dir, 'backend')
+frontend_dir = os.path.join(current_dir, 'frontend')
+
+sys.path.insert(0, backend_dir)
+sys.path.insert(0, frontend_dir)
 
 # Backend imports
 from missions import get_mission, get_mission_count, get_mission_hints, get_correct_answer

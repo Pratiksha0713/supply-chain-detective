@@ -11,7 +11,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import sys
-sys.path.append('frontend')
+import os
+
+# Add frontend path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, current_dir)
 
 from components import mission_header, alert_box, submit_button, render_info_box
 

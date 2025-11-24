@@ -8,7 +8,11 @@ and option to proceed to next mission.
 import streamlit as st
 import plotly.graph_objects as go
 import sys
-sys.path.append('frontend')
+import os
+
+# Add frontend path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, current_dir)
 
 from components import kpi_card, render_info_box, submit_button
 
