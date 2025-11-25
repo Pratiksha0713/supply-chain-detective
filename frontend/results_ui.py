@@ -17,6 +17,32 @@ sys.path.insert(0, current_dir)
 from components import kpi_card, render_info_box, submit_button
 
 
+# Root cause choice mapping for display
+ROOT_CAUSE_CHOICES = {
+    "supplier_reliability_issues": "🚚 Supplier Reliability Issues",
+    "warehouse_overload": "🏭 Warehouse Overload",
+    "route_congestion": "🗺️ Route Congestion",
+    "inventory_mismatch": "📦 Inventory Mismatch",
+    "weather_disruptions": "🌧️ Weather Disruptions",
+    "equipment_failure": "⚙️ Equipment Failure",
+    "seasonal_demand_surge": "📈 Seasonal Demand Surge",
+    "labor_shortage": "👥 Labor Shortage"
+}
+
+
+def format_root_cause(cause_id):
+    """
+    Convert root cause ID to human-readable format.
+    
+    Args:
+        cause_id (str): Root cause identifier
+        
+    Returns:
+        str: Formatted root cause name with icon
+    """
+    return ROOT_CAUSE_CHOICES.get(cause_id, cause_id.replace('_', ' ').title())
+
+
 def render_results(final_score, user_guess, correct_cause, score_breakdown):
     """
     Render complete results screen with score, breakdown, and next steps.
@@ -28,8 +54,7 @@ def render_results(final_score, user_guess, correct_cause, score_breakdown):
         score_breakdown (dict): Detailed breakdown of score components
             - correct (bool): Whether answer was correct
             - base_score (int): Starting score
-            - time_taken (float): Time in seconds
-            - time_penalty (float): Penalty from time
+            - time_taken (float): Time in seconds (for display only)
             - hints_used (int): Number of hints used
             - hint_penalty (int): Penalty from hints
             - total_penalties (float): Sum of all penalties
@@ -161,18 +186,22 @@ def render_explanation(correct_answer, submitted_answer, is_correct):
     """
     st.markdown("### 🎯 Answer Analysis")
     
+    # Format the answers for display
+    formatted_submitted = format_root_cause(submitted_answer)
+    formatted_correct = format_root_cause(correct_answer)
+    
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("#### Your Answer")
         if is_correct:
-            render_info_box(f"✅ {submitted_answer}", type="success")
+            render_info_box(f"✅ {formatted_submitted}", type="success")
         else:
-            render_info_box(f"❌ {submitted_answer}", type="error")
+            render_info_box(f"❌ {formatted_submitted}", type="error")
     
     with col2:
         st.markdown("#### Correct Answer")
-        render_info_box(f"✓ {correct_answer}", type="success")
+        render_info_box(f"✓ {formatted_correct}", type="success")
     
     if not is_correct:
         st.info("💡 Review the data and insights to understand the correct root cause. Try again to improve your detective skills!")
@@ -228,16 +257,6 @@ def render_score_breakdown_detailed(score_breakdown):
         <div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee;">
             <span style="font-weight: bold;">Base Score (Answer Correctness)</span>
             <span style="color: #28a745; font-weight: bold;">+{base_score} points</span>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Time penalty
-    time_penalty = score_breakdown.get('time_penalty', 0)
-    time_taken = score_breakdown.get('time_taken', 0)
-    st.markdown(f"""
-        <div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee;">
-            <span>Time Penalty ({time_taken:.0f} seconds × 0.1)</span>
-            <span style="color: #dc3545; font-weight: bold;">-{time_penalty:.1f} points</span>
         </div>
     """, unsafe_allow_html=True)
     
@@ -307,10 +326,10 @@ def render_performance_chart(score_breakdown):
     fig = go.Figure(go.Waterfall(
         name = "Score Breakdown",
         orientation = "v",
-        measure = ["absolute", "relative", "relative", "total"],
-        x = ["Base Score", "Time Penalty", "Hint Penalty", "Final Score"],
-        y = [base_score, -time_penalty, -hint_penalty, final_score],
-        text = [f"+{base_score}", f"-{time_penalty:.1f}", f"-{hint_penalty}", f"{final_score:.1f}"],
+        measure = ["absolute", "relative", "total"],
+        x = ["Base Score", "Hint Penalty", "Final Score"],
+        y = [base_score, -hint_penalty, final_score],
+        text = [f"+{base_score}", f"-{hint_penalty}", f"{final_score:.1f}"],
         textposition = "outside",
         connector = {"line":{"color":"rgb(63, 63, 63)"}},
         decreasing = {"marker":{"color":"#dc3545"}},
@@ -336,9 +355,9 @@ def render_performance_chart(score_breakdown):
     elif performance_rating == 'Great':
         st.success("👏 Great job! You solved the case efficiently.")
     elif performance_rating == 'Good':
-        st.info("👍 Good work! There's room for improvement in speed or hint usage.")
+        st.info("👍 Good work! There's room for improvement in hint usage.")
     elif performance_rating == 'Fair':
-        st.warning("💪 Fair effort. Try to work faster and use fewer hints next time.")
+        st.warning("💪 Fair effort. Try to use fewer hints next time.")
     elif performance_rating == 'Poor':
         st.warning("📚 You found the answer, but consider improving your efficiency.")
     else:

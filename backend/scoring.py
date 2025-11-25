@@ -8,18 +8,17 @@ and hints used to calculate final mission score.
 # Scoring constants
 BASE_SCORE_CORRECT = 100
 BASE_SCORE_WRONG = 0
-TIME_PENALTY_PER_SECOND = 0.1
+TIME_PENALTY_PER_SECOND = 0  # Time penalty removed
 HINT_PENALTY_PER_HINT = 10
 
 
 def score_submission(user_guess, correct_cause, time_taken, hints_used):
     """
-    Score a user's mission submission based on correctness, time, and hints used.
+    Score a user's mission submission based on correctness and hints used.
     
     Scoring Rules:
     - Correct answer: 100 points
     - Wrong answer: 0 points
-    - Time penalty: -0.1 points per second
     - Hint penalty: -10 points per hint used
     
     Args:
@@ -191,13 +190,13 @@ def get_performance_feedback(score):
     if score >= 90:
         return "Outstanding work! You're a master supply chain detective!"
     elif score >= 75:
-        return "Great job! You identified the root cause quickly and efficiently."
+        return "Great job! You identified the root cause efficiently."
     elif score >= 60:
         return "Good work! You found the answer, but there's room for improvement."
     elif score >= 40:
-        return "Fair effort. Try using fewer hints and working faster next time."
+        return "Fair effort. Try using fewer hints next time."
     elif score > 0:
-        return "You found the answer, but took too long or used too many hints."
+        return "You found the answer, but used too many hints."
     else:
         return "Incorrect answer. Review the data and try again!"
 
@@ -220,7 +219,6 @@ def format_score_report(breakdown):
         f"Base Score: {breakdown['base_score']} points",
         "",
         "Penalties:",
-        f"  Time taken: {breakdown['time_taken']:.1f}s (-{breakdown['time_penalty']:.1f} points)",
         f"  Hints used: {breakdown['hints_used']} (-{breakdown['hint_penalty']} points)",
         f"  Total penalties: -{breakdown['total_penalties']:.1f} points",
         "",
