@@ -16,7 +16,7 @@ MISSIONS = [
             arriving 3-5 days late. Your mission: investigate the supply chain data, identify patterns,
             and determine the root cause of these delays before the company loses more business.
         """,
-        "expected_root_cause": "supplier_capacity_shortage",
+        "expected_root_cause": "supplier_reliability_issues",
         "hints": [
             "Check if delays correlate with specific suppliers or regions",
             "Look at supplier performance metrics and capacity utilization",
@@ -35,7 +35,7 @@ MISSIONS = [
             no issues. Returns are piling up, and the quality assurance team suspects something is happening
             during transportation or storage. Dive into the data to uncover what's causing these quality anomalies.
         """,
-        "expected_root_cause": "improper_storage_conditions",
+        "expected_root_cause": "equipment_failure",
         "hints": [
             "Investigate temperature-sensitive products and storage conditions",
             "Check warehouse locations and their environmental controls",
@@ -55,7 +55,7 @@ MISSIONS = [
             inventory tracking, demand forecasting, or warehouse management. This is a complex puzzle that
             requires deep analysis of multiple data sources to solve.
         """,
-        "expected_root_cause": "inventory_system_synchronization_error",
+        "expected_root_cause": "inventory_mismatch",
         "hints": [
             "Compare physical inventory counts with system records",
             "Check for timing delays in inventory updates across systems",

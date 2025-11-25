@@ -453,20 +453,92 @@ def render_narrative_section(mission):
 
 def render_submit_form():
     """
-    Render form for submitting root cause conclusion.
+    Render form for submitting root cause conclusion with choice cards.
     
     Returns:
         tuple: (user_conclusion, submit_clicked)
     """
-    st.markdown("Analyze the data above and submit your conclusion about the root cause.")
+    st.markdown("### 🎯 Select the Root Cause")
+    st.markdown("Choose the option that best explains the supply chain disruption:")
     
-    # Text input for conclusion
-    user_conclusion = st.text_area(
-        "Your Root Cause Analysis",
-        placeholder="Enter your conclusion about what's causing the supply chain issues...",
-        height=100,
-        key="conclusion_input"
-    )
+    # Initialize selected choice in session state
+    if 'selected_root_cause' not in st.session_state:
+        st.session_state.selected_root_cause = None
+    
+    # Define root cause choices
+    root_cause_choices = [
+        {
+            "id": "supplier_reliability_issues",
+            "icon": "🚚",
+            "title": "Supplier Reliability Issues",
+            "description": "Delays caused by unreliable suppliers or capacity constraints"
+        },
+        {
+            "id": "warehouse_overload",
+            "icon": "🏭",
+            "title": "Warehouse Overload",
+            "description": "Distribution centers operating beyond capacity"
+        },
+        {
+            "id": "route_congestion",
+            "icon": "🗺️",
+            "title": "Route Congestion",
+            "description": "Transportation delays due to route issues or traffic"
+        },
+        {
+            "id": "inventory_mismatch",
+            "icon": "📦",
+            "title": "Inventory Mismatch",
+            "description": "System inventory doesn't match physical stock"
+        },
+        {
+            "id": "weather_disruptions",
+            "icon": "🌧️",
+            "title": "Weather Disruptions",
+            "description": "Delays caused by adverse weather conditions"
+        },
+        {
+            "id": "equipment_failure",
+            "icon": "⚙️",
+            "title": "Equipment Failure",
+            "description": "Breakdowns in machinery or transportation equipment"
+        },
+        {
+            "id": "seasonal_demand_surge",
+            "icon": "📈",
+            "title": "Seasonal Demand Surge",
+            "description": "Unable to handle peak season demand spikes"
+        },
+        {
+            "id": "labor_shortage",
+            "icon": "👥",
+            "title": "Labor Shortage",
+            "description": "Insufficient workforce to handle operations"
+        }
+    ]
+    
+    # Render choice cards in a grid
+    cols_per_row = 2
+    rows = [root_cause_choices[i:i+cols_per_row] for i in range(0, len(root_cause_choices), cols_per_row)]
+    
+    for row in rows:
+        cols = st.columns(cols_per_row)
+        for col, choice in zip(cols, row):
+            with col:
+                render_choice_card(choice)
+    
+    st.markdown("---")
+    
+    # Show selected choice
+    if st.session_state.selected_root_cause:
+        selected_choice = next(
+            (c for c in root_cause_choices if c['id'] == st.session_state.selected_root_cause),
+            None
+        )
+        if selected_choice:
+            st.success(f"✓ Selected: **{selected_choice['icon']} {selected_choice['title']}**")
+    else:
+        st.info("👆 Please select a root cause above to continue")
     
     # Submit button
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -474,7 +546,65 @@ def render_submit_form():
     with col2:
         submit_clicked = submit_button("🔍 Submit Analysis")
     
+    user_conclusion = st.session_state.selected_root_cause if st.session_state.selected_root_cause else ""
+    
     return user_conclusion, submit_clicked
+
+
+def render_choice_card(choice):
+    """
+    Render a clickable choice card for root cause selection.
+    
+    Args:
+        choice (dict): Choice configuration with id, icon, title, description
+    """
+    is_selected = st.session_state.selected_root_cause == choice['id']
+    
+    # Card styling
+    border_color = "#667eea" if is_selected else "#ddd"
+    bg_color = "#f0f4ff" if is_selected else "white"
+    shadow = "0 4px 12px rgba(102, 126, 234, 0.3)" if is_selected else "0 2px 4px rgba(0,0,0,0.1)"
+    
+    # Create clickable card
+    card_html = f"""
+    <div style="
+        background-color: {bg_color};
+        border: 3px solid {border_color};
+        border-radius: 12px;
+        padding: 20px;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: {shadow};
+        min-height: 150px;
+    ">
+        <div style="font-size: 48px; text-align: center; margin-bottom: 10px;">
+            {choice['icon']}
+        </div>
+        <h4 style="
+            color: #333;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 18px;
+        ">{choice['title']}</h4>
+        <p style="
+            color: #666;
+            text-align: center;
+            font-size: 14px;
+            margin: 5px 0;
+            line-height: 1.4;
+        ">{choice['description']}</p>
+        {'<div style="text-align: center; color: #667eea; font-weight: bold; margin-top: 10px;">✓ SELECTED</div>' if is_selected else ''}
+    </div>
+    """
+    
+    st.markdown(card_html, unsafe_allow_html=True)
+    
+    # Button to select this choice (invisible but functional)
+    button_label = f"{'✓ Selected' if is_selected else 'Select'}: {choice['title']}"
+    if st.button(button_label, key=f"choice_{choice['id']}", use_container_width=True):
+        st.session_state.selected_root_cause = choice['id']
+        st.rerun()
 
 
 def render_investigation_mode(data, mission):

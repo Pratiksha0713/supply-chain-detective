@@ -54,6 +54,10 @@ def initialize_session_state():
     if 'user_guess' not in st.session_state:
         st.session_state.user_guess = ''
     
+    # Selected root cause (for choice cards)
+    if 'selected_root_cause' not in st.session_state:
+        st.session_state.selected_root_cause = None
+    
     # Score tracking
     if 'final_score' not in st.session_state:
         st.session_state.final_score = 0
@@ -138,10 +142,9 @@ def render_home_page():
         ### Scoring System
         
         - ✅ **Correct Answer**: 100 points base score
-        - ⏱️ **Time Penalty**: -0.1 points per second
         - 💡 **Hint Penalty**: -10 points per hint used
         
-        The faster and more independently you solve the case, the higher your score!
+        The more independently you solve the case, the higher your score!
     """)
     
     st.markdown("---")
@@ -201,6 +204,7 @@ def render_dashboard_screen():
             st.session_state.screen = 'investigation'
             st.session_state.timer_start = time.time()
             st.session_state.hints_used = 0
+            st.session_state.selected_root_cause = None  # Reset choice
             st.rerun()
 
 
@@ -239,8 +243,8 @@ def render_investigation_screen():
     
     # Handle submission
     if submit_clicked:
-        if not user_conclusion or len(user_conclusion.strip()) < 10:
-            alert_box("Please enter a more detailed conclusion (at least 10 characters).")
+        if not user_conclusion:
+            alert_box("⚠️ Please select a root cause before submitting your analysis.")
         else:
             # Calculate time taken
             if st.session_state.timer_start:
@@ -304,6 +308,7 @@ def render_results_screen():
         st.session_state.timer_start = None
         st.session_state.hints_used = 0
         st.session_state.user_guess = ''
+        st.session_state.selected_root_cause = None
         
         st.rerun()
     
@@ -312,6 +317,7 @@ def render_results_screen():
         st.session_state.screen = 'investigation'
         st.session_state.timer_start = time.time()
         st.session_state.hints_used = 0
+        st.session_state.selected_root_cause = None
         st.session_state.retry_mission = False
         st.rerun()
     
