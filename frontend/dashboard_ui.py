@@ -254,17 +254,26 @@ def render_cost_delay_scatter(sh_df, delay_df):
     """
     st.markdown("#### 💰 Cost vs Delay Analysis")
     
-    if sh_df is None or sh_df.empty or delay_df is None or delay_df.empty:
+    if sh_df is None or sh_df.empty:
         st.info("Insufficient data for cost vs delay analysis.")
         return
     
-    # Merge dataframes if they have a common key
-    if 'shipment_id' in sh_df.columns and 'shipment_id' in delay_df.columns:
-        merged_df = pd.merge(sh_df, delay_df[['shipment_id', 'delay_days']], on='shipment_id', how='inner')
-    elif 'cost' in delay_df.columns and 'delay_days' in delay_df.columns:
-        merged_df = delay_df
-    elif 'cost' in sh_df.columns and 'delay_days' in sh_df.columns:
+    # Check if sh_df already has both columns (most common case)
+    if 'cost' in sh_df.columns and 'delay_days' in sh_df.columns:
         merged_df = sh_df
+    # Otherwise try to merge with delay_df
+    elif delay_df is not None and not delay_df.empty:
+        if 'shipment_id' in sh_df.columns and 'shipment_id' in delay_df.columns:
+            # Only merge delay_days if sh_df doesn't have it
+            if 'delay_days' not in sh_df.columns:
+                merged_df = pd.merge(sh_df, delay_df[['shipment_id', 'delay_days']], on='shipment_id', how='inner')
+            else:
+                merged_df = sh_df
+        elif 'cost' in delay_df.columns and 'delay_days' in delay_df.columns:
+            merged_df = delay_df
+        else:
+            st.warning("Unable to correlate cost and delay data.")
+            return
     else:
         st.warning("Unable to correlate cost and delay data.")
         return
