@@ -88,6 +88,31 @@ MISSIONS = [
             "Examine the timing: do disappearances correlate with specific shifts or personnel?"
         ],
         "difficulty": "Expert"
+    },
+    {
+        "id": 5,
+        "title": "The Cascade Effect: When One Supplier Breaks the Chain",
+        "description": """
+            Your company's supply chain is experiencing a cascading failure that's threatening to shut down
+            production lines across three continents. It started innocuously: a single supplier in Southeast Asia
+            missed a delivery deadline by 48 hours. But within two weeks, the ripple effect has caused stockouts,
+            production halts, and expedited shipping costs exceeding $800K. What's baffling is the magnitude -
+            this supplier only provides 8% of your raw materials, yet the impact is catastrophic. Other suppliers
+            are now also missing deadlines, and your alternative sourcing strategies aren't working as planned.
+            Manufacturing plants are pointing fingers at procurement, procurement blames logistics, and logistics
+            claims the forecasting models are flawed. You need to map the hidden dependencies, identify the
+            critical bottleneck, and propose an emergency mitigation strategy before the entire operation collapses.
+        """,
+        "expected_root_cause": "critical_dependency_failure",
+        "hints": [
+            "Map the complete dependency network - which products rely on this supplier's materials?",
+            "Check if this supplier provides a unique component used across multiple product lines",
+            "Analyze lead times and buffer stock levels for alternative suppliers",
+            "Look for shared resources or facilities between this supplier and others",
+            "Investigate if the delayed component is a prerequisite for just-in-time processes",
+            "Examine your supply chain topology - is this a single point of failure?"
+        ],
+        "difficulty": "Hard"
     }
 ]
 
@@ -97,7 +122,7 @@ def get_mission(index):
     Get mission by index (0-based).
     
     Args:
-        index (int): Zero-based index of the mission (0-3)
+        index (int): Zero-based index of the mission (0-4)
         
     Returns:
         dict: Mission configuration dictionary or None if index is invalid
@@ -112,7 +137,7 @@ def load_mission(mission_id):
     Load mission configuration by ID.
     
     Args:
-        mission_id (int): Mission ID (1-4)
+        mission_id (int): Mission ID (1-5)
         
     Returns:
         dict: Mission configuration dictionary or None if not found
