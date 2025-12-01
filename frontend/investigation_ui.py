@@ -514,6 +514,18 @@ def render_submit_form():
             "icon": "👥",
             "title": "Labor Shortage",
             "description": "Insufficient workforce to handle operations"
+        },
+        {
+            "id": "fraudulent_activity",
+            "icon": "🚨",
+            "title": "Fraudulent Activity",
+            "description": "Security breach or theft involving internal/external actors"
+        },
+        {
+            "id": "critical_dependency_failure",
+            "icon": "⛓️",
+            "title": "Critical Dependency Failure",
+            "description": "Single point of failure causing cascading supply chain impact"
         }
     ]
     
