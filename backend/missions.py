@@ -64,6 +64,30 @@ MISSIONS = [
             "Investigate recent system updates or integration changes"
         ],
         "difficulty": "Hard"
+    },
+    {
+        "id": 4,
+        "title": "Operation Ghost Network: The Vanishing Shipments",
+        "description": """
+            A sophisticated anomaly has emerged in your international supply chain network. Over the past six weeks,
+            high-value shipments have been mysteriously disappearing between customs clearance and final delivery.
+            The losses total $2.3 million, and each incident shows legitimate tracking updates until the cargo
+            suddenly goes dark. Security footage is intact, all documentation appears authentic, and carriers
+            claim no knowledge of the missing goods. Even more puzzling: some items reappear weeks later at
+            unauthorized distribution points. The board suspects either an elaborate theft ring with inside access
+            or a critical system vulnerability being exploited. Your forensic analysis could be the difference
+            between bankruptcy and catching the perpetrators. Time is running out as the pattern is accelerating.
+        """,
+        "expected_root_cause": "fraudulent_activity",
+        "hints": [
+            "Analyze shipment routes and identify common transit points for missing cargo",
+            "Cross-reference employee access logs with shipment disappearance timestamps",
+            "Look for unusual patterns in carrier switches or route deviations",
+            "Check for abnormal authentication attempts or system access from unexpected locations",
+            "Investigate relationships between affected shipments - products, values, destinations",
+            "Examine the timing: do disappearances correlate with specific shifts or personnel?"
+        ],
+        "difficulty": "Expert"
     }
 ]
 
@@ -73,7 +97,7 @@ def get_mission(index):
     Get mission by index (0-based).
     
     Args:
-        index (int): Zero-based index of the mission (0-2)
+        index (int): Zero-based index of the mission (0-3)
         
     Returns:
         dict: Mission configuration dictionary or None if index is invalid
@@ -88,7 +112,7 @@ def load_mission(mission_id):
     Load mission configuration by ID.
     
     Args:
-        mission_id (int): Mission ID (1-3)
+        mission_id (int): Mission ID (1-4)
         
     Returns:
         dict: Mission configuration dictionary or None if not found
