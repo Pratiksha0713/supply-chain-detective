@@ -26,7 +26,9 @@ ROOT_CAUSE_CHOICES = {
     "weather_disruptions": "🌧️ Weather Disruptions",
     "equipment_failure": "⚙️ Equipment Failure",
     "seasonal_demand_surge": "📈 Seasonal Demand Surge",
-    "labor_shortage": "👥 Labor Shortage"
+    "labor_shortage": "👥 Labor Shortage",
+    "fraudulent_activity": "🚨 Fraudulent Activity",
+    "critical_dependency_failure": "⛓️ Critical Dependency Failure"
 }
 
 

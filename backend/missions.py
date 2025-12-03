@@ -64,6 +64,55 @@ MISSIONS = [
             "Investigate recent system updates or integration changes"
         ],
         "difficulty": "Hard"
+    },
+    {
+        "id": 4,
+        "title": "Operation Ghost Network: The Vanishing Shipments",
+        "description": """
+            A sophisticated anomaly has emerged in your international supply chain network. Over the past six weeks,
+            high-value shipments have been mysteriously disappearing between customs clearance and final delivery.
+            The losses total $2.3 million, and each incident shows legitimate tracking updates until the cargo
+            suddenly goes dark. Security footage is intact, all documentation appears authentic, and carriers
+            claim no knowledge of the missing goods. Even more puzzling: some items reappear weeks later at
+            unauthorized distribution points. The board suspects either an elaborate theft ring with inside access
+            or a critical system vulnerability being exploited. Your forensic analysis could be the difference
+            between bankruptcy and catching the perpetrators. Time is running out as the pattern is accelerating.
+        """,
+        "expected_root_cause": "fraudulent_activity",
+        "hints": [
+            "Analyze shipment routes and identify common transit points for missing cargo",
+            "Cross-reference employee access logs with shipment disappearance timestamps",
+            "Look for unusual patterns in carrier switches or route deviations",
+            "Check for abnormal authentication attempts or system access from unexpected locations",
+            "Investigate relationships between affected shipments - products, values, destinations",
+            "Examine the timing: do disappearances correlate with specific shifts or personnel?"
+        ],
+        "difficulty": "Expert"
+    },
+    {
+        "id": 5,
+        "title": "The Cascade Effect: When One Supplier Breaks the Chain",
+        "description": """
+            Your company's supply chain is experiencing a cascading failure that's threatening to shut down
+            production lines across three continents. It started innocuously: a single supplier in Southeast Asia
+            missed a delivery deadline by 48 hours. But within two weeks, the ripple effect has caused stockouts,
+            production halts, and expedited shipping costs exceeding $800K. What's baffling is the magnitude -
+            this supplier only provides 8% of your raw materials, yet the impact is catastrophic. Other suppliers
+            are now also missing deadlines, and your alternative sourcing strategies aren't working as planned.
+            Manufacturing plants are pointing fingers at procurement, procurement blames logistics, and logistics
+            claims the forecasting models are flawed. You need to map the hidden dependencies, identify the
+            critical bottleneck, and propose an emergency mitigation strategy before the entire operation collapses.
+        """,
+        "expected_root_cause": "critical_dependency_failure",
+        "hints": [
+            "Map the complete dependency network - which products rely on this supplier's materials?",
+            "Check if this supplier provides a unique component used across multiple product lines",
+            "Analyze lead times and buffer stock levels for alternative suppliers",
+            "Look for shared resources or facilities between this supplier and others",
+            "Investigate if the delayed component is a prerequisite for just-in-time processes",
+            "Examine your supply chain topology - is this a single point of failure?"
+        ],
+        "difficulty": "Hard"
     }
 ]
 
@@ -73,7 +122,7 @@ def get_mission(index):
     Get mission by index (0-based).
     
     Args:
-        index (int): Zero-based index of the mission (0-2)
+        index (int): Zero-based index of the mission (0-4)
         
     Returns:
         dict: Mission configuration dictionary or None if index is invalid
@@ -88,7 +137,7 @@ def load_mission(mission_id):
     Load mission configuration by ID.
     
     Args:
-        mission_id (int): Mission ID (1-3)
+        mission_id (int): Mission ID (1-5)
         
     Returns:
         dict: Mission configuration dictionary or None if not found
