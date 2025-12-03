@@ -4,29 +4,14 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environment
-venv/
 env/
-ENV/
-.venv
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
 
-# IDEs
+# IDE
 .vscode/
 .idea/
 *.swp
@@ -40,14 +25,8 @@ Thumbs.db
 # Streamlit
 .streamlit/secrets.toml
 
+# Data (uncomment if you want to ignore data files)
+# data/*.csv
+
 # Logs
 *.log
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-
-
-

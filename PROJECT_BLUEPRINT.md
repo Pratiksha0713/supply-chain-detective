@@ -1,266 +1,110 @@
-# 🎮 Supply Chain Detective — Analytics Puzzle Game
+# Supply Chain Detective
 
-## 1️⃣ Project Summary
+A browser-based analytics puzzle game where you investigate supply chain disruptions using real data analysis techniques.
 
-Supply Chain Detective is a browser-based, data-driven investigation game where players act as supply chain analysts.
+## What is this?
 
-Each mission presents delayed shipments, and the player must discover the true root-cause using analytics dashboards, anomaly indicators, and investigative tools.
+I built this project to showcase practical analytics and data engineering skills in a fun, interactive format. Players act as supply chain analysts, digging through data to find root causes of shipment delays.
 
-**Technology goal:**
-Showcase real-world analytics engineering, dashboards, and ML skills.
+Think of it as a "detective game" but for data nerds.
 
----
+## How the game works
 
-## 2️⃣ Primary Objectives
+1. You get a mission with a dataset of shipments
+2. Explore the dashboard to spot patterns
+3. Filter, drill down, investigate
+4. Form a hypothesis about what's causing delays
+5. Submit your answer
+6. Get scored based on accuracy
 
-✔ Provide interactive investigation gameplay  
-✔ Demonstrate real analytics workflows  
-✔ Present business context & decision-making  
-✔ Feature live dashboards & analysis tools  
-✔ Optionally include ML-driven insights  
-✔ Score the player based on accuracy  
-
----
-
-## 3️⃣ Core Gameplay Loop
-
-1. Load mission dataset
-2. Player explores dashboards
-3. Player filters/searches/inspects data
-4. Player forms hypothesis
-5. Player submits root-cause
-6. System evaluates correctness
-7. Score screen → next mission
-
----
-
-## 4️⃣ User Actions Supported
-
-### Data Interaction
-
-- Filter shipments (supplier, warehouse, region, date)
-- Inspect warehouse metrics
-- Compare suppliers
-- Analyze routes
-- Review delay logs
-- Visualize trends
-
-### Decision Support
-
-- Anomaly alerts
-- Risk indicators
-- KPI comparison
-- Narrative clues
-
-### Core Action
-
-➡ **Submit final conclusion**
-
----
-
-## 5️⃣ Data Sources
-
-**Directory:** `/data`
-
-**Files:**
-- `shipments.csv`
-- `warehouses.csv`
-- `delays.csv`
-
-**Minimal fields:**
-- shipment_id
-- warehouse_id
-- supplier
-- origin
-- destination
-- distance_km
-- expected_time
-- actual_time
-- cost
-- sku_count
-- traffic_index
-
----
-
-## 6️⃣ System Architecture
-
-### High-Level Flow
+## Project Structure
 
 ```
-CSV Data
-→ Preprocessing (Pandas)
-→ Analytics Engine
-→ Visualization Layer
-→ Game Logic Engine
-→ Streamlit UI
-→ Scoring System
-→ Deployment
+├── app.py                 # Main Streamlit entry point
+├── backend/
+│   ├── data_loader.py     # CSV loading + validation
+│   ├── preprocess.py      # Data cleaning, feature engineering
+│   ├── kpi_engine.py      # Metrics calculations
+│   ├── missions.py        # Mission configs and answers
+│   ├── scoring.py         # Score calculation logic
+│   ├── anomaly_model.py   # IsolationForest for outlier detection
+│   └── delay_predictor.py # RandomForest for delay predictions
+├── frontend/
+│   ├── components.py      # Reusable UI components
+│   ├── dashboard_ui.py    # Dashboard view
+│   ├── investigation_ui.py# Investigation mode
+│   └── results_ui.py      # Score/results screen
+└── utils/
+    ├── constants.py
+    └── helpers.py
 ```
 
----
+## Data schema
 
-## 7️⃣ Component Blueprint
+Working with these core fields:
+- shipment_id, warehouse_id, supplier
+- origin, destination, distance_km
+- expected_time, actual_time
+- cost, sku_count, traffic_index
 
-### Backend – Python
+Additional computed fields:
+- transit_time (actual - expected)
+- delay_flag
+- supplier_score
 
-**`data_loader.py`**
-- Loads CSVs + schema validation
+## Key metrics tracked
 
-**`preprocess.py`**
-- Missing values
-- Outlier removal
-- Feature engineering:
-  - transit_time
-  - delay_flag
-  - supplier_score
+- Average delay (days/hours)
+- Delay rate percentage
+- Total vs late shipments
+- Warehouse utilization scores
+- Supplier reliability
 
-**`analysis_engine.py`**
-- Metrics + KPIs
+## Tech stack
 
-**`missions.py`**
-- Mission config & correct answer
+- **Python 3.x**
+- **Streamlit** for the UI
+- **Pandas/NumPy** for data wrangling
+- **Plotly/Altair** for visualizations
+- **Scikit-learn** for ML models
 
-**`scoring.py`**
-- Correctness
-- Timing
-- Hint penalty
+## ML components (optional features)
 
-**`ml/`**
-- `anomaly_model.py` (IsolationForest)
-- `delay_risk_model.py` (RandomForest)
-- `forecasting.py` (Prophet/ARIMA)
+The game includes some ML-driven hints:
 
-### Frontend – Streamlit
+- **Delay predictor**: RandomForest model that estimates delay risk
+- **Anomaly detector**: IsolationForest to flag unusual shipments
+- Could add Prophet/ARIMA for demand forecasting later
 
-**Home**
-- Start game
-- How to play
-- About
-- GitHub link
+## Scoring
 
-**Dashboard**
-- KPI cards
-- Charts
-- Anomaly panel
+- 100 points for correct answer
+- -10 points per hint used
+- Time bonuses possible in future versions
 
-**Investigation Mode**
-- Filters
-- Raw table
-- Charts
-- ML hints
-- Narrative
-- Submit guess
+## Running locally
 
-**Results**
-- Correct vs incorrect
-- Explanation
-- Scores
-- Next mission
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
----
+## Deployment
 
-## 8️⃣ KPIs Required
+Hosted on Streamlit Cloud. Just connect the GitHub repo and point to `app.py`.
 
-- Average delay
-- Delay rate (%)
-- Total shipments
-- Late shipments
-- Warehouse load score
-- Supplier reliability score
+## Roadmap
 
----
+**Done:**
+- Core dashboard and investigation UI
+- Mission system with scoring
+- Basic anomaly detection
 
-## 9️⃣ Visualizations Needed
+**Next up:**
+- More missions with varying difficulty
+- Better ML integration
+- Story mode with connected missions
 
-- Line charts
-- Bar charts
-- Bubble chart
-- Scatter
-- Geo route map (optional)
-
----
-
-## 🔟 Machine Learning (Optional)
-
-### Model 1: Delay Risk Predictor
-- RandomForestRegressor
-- Predicts minutes of delay
-
-### Model 2: Anomaly Detector
-- IsolationForest
-- Flags abnormal shipments
-
-### Model 3: SKU Forecaster
-- Prophet/ARIMA
-- Project future demand spikes
-
----
-
-## 1️⃣1️⃣ Scoring System
-
-**Factors:**
-- Correctness
-- Time taken
-- Number of hints used
-- Bonus rules allowed
-
----
-
-## 1️⃣2️⃣ MVP Scope
-
-**Must include:**
-- 1 mission
-- Dashboard
-- Investigation mode
-- Submit answer
-- Score screen
-
-**No ML required for MVP.**
-
----
-
-## 1️⃣3️⃣ Tech Stack
-
-- Python
-- Pandas
-- NumPy
-- Scikit-Learn
-- Streamlit
-- Plotly
-- Altair
-- (optional) Prophet
-
-**Deployment:** Streamlit Cloud
-
----
-
-## 1️⃣4️⃣ Production Deployment Steps
-
-1. Push repo to GitHub
-2. Connect repo in Streamlit Cloud
-3. Choose branch = main
-4. App file = app.py
-5. Deploy
-
----
-
-## 1️⃣5️⃣ Roadmap
-
-### v1 – MVP
-- Dashboard
-- 1 mission
-- Scoring
-
-### v2
-- Anomaly ML
-- Multiple missions
-
-### v3
-- Forecasting
-- Mission tree
-- Story mode
-
-### v4
-- Authentication
-- Leaderboard
-
+**Maybe later:**
+- User accounts / leaderboard
+- Custom mission builder
